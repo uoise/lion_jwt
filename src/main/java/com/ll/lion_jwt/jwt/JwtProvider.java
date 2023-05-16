@@ -20,7 +20,7 @@ public class JwtProvider {
     private String secretKeyPlain;
 
     private SecretKey _getSecretKey() {
-        String keyBase64Encoded = Base64.getEncoder().encodeToString(secretKeyPlain.getBytes());
+        final String keyBase64Encoded = Base64.getEncoder().encodeToString(secretKeyPlain.getBytes());
         return Keys.hmacShaKeyFor(keyBase64Encoded.getBytes());
     }
 
@@ -31,7 +31,7 @@ public class JwtProvider {
     }
 
     public String genToken(Map<String, Object> claims, int seconds) {
-        long now = new Date().getTime();
+        final long now = new Date().getTime();
         Date accessTokenExpiresIn = new Date(now + 1000L * seconds);
         return Jwts.builder()
                 .claim("body", Ut.json.toStr(claims))
@@ -54,7 +54,7 @@ public class JwtProvider {
     }
 
     public Map<String, Object> getClaims(String token) {
-        String body = Jwts.parserBuilder()
+        final String body = Jwts.parserBuilder()
                 .setSigningKey(getSecretKey())
                 .build()
                 .parseClaimsJws(token)
